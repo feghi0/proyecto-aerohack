@@ -1,4 +1,4 @@
-﻿export const integrantes = [
+export const integrantes = [
   {
     nombre: 'Manteiga Agustín',
     rol: 'Coordinador de Proyecto / Desarrollador Backend',
@@ -33,6 +33,11 @@
     nombre: 'Bartero Lautaro',
     rol: 'DevOps / Despliegue e Infraestructura',
     avatar: 'LB'
+  },
+  {
+    nombre: 'Piñero Natanael',
+    rol: 'Desarrollador de Hardware / Sensores IoT',
+    avatar: 'PN'
   }
 ];
 
