@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 import DataCard from '../components/cards/DataCard';
 import AlertCard from '../components/cards/AlertCard';
@@ -22,6 +22,25 @@ export default function DashboardPage() {
     uv: 6.8
   });
 
+  const selectedZoneRef = useRef(selectedZone);
+  const climaBaseRef = useRef(climaBase);
+
+  // Mantener las refs actualizadas
+  useEffect(() => {
+    selectedZoneRef.current = selectedZone;
+  }, [selectedZone]);
+
+  useEffect(() => {
+    climaBaseRef.current = climaBase;
+  }, [climaBase]);
+
+  const handleZoneSelect = useCallback((zona) => {
+    setSelectedZone(prev => {
+      if (!zona || prev?.id === zona.id) return null;
+      return zona;
+    });
+  }, []);
+
   // Cargar datos (remoto con fallback local)
   const cargarDatos = async () => {
     try {
@@ -31,25 +50,24 @@ export default function DashboardPage() {
       setTelemetria(data);
       
       // Actualizar zona seleccionada con datos frescos
-      if (selectedZone) {
-        const fresca = data.sensores?.find(z => z.id === selectedZone.id);
+      if (selectedZoneRef.current) {
+        const fresca = data.sensores?.find(z => z.id === selectedZoneRef.current.id);
         if (fresca) setSelectedZone(fresca);
       }
     } catch {
       // Fallback local: simular datos en cliente
-      const fluctuacionTemp = climaBase.temperatura + (Math.random() - 0.5) * 0.3;
-      const fluctuacionHum = Math.max(20, Math.min(100, climaBase.humedad + Math.round((Math.random() - 0.5) * 2)));
-      setClimaBase({
+      const base = climaBaseRef.current;
+      const fluctuacionTemp = base.temperatura + (Math.random() - 0.5) * 0.3;
+      const fluctuacionHum = Math.max(20, Math.min(100, base.humedad + Math.round((Math.random() - 0.5) * 2)));
+      
+      const nuevoClima = {
         temperatura: parseFloat(fluctuacionTemp.toFixed(2)),
         humedad: fluctuacionHum,
-        uv: climaBase.uv
-      });
+        uv: base.uv
+      };
+      setClimaBase(nuevoClima);
 
-      const zonasProcesadas = obtenerZonasProcesadas({
-        temperatura: fluctuacionTemp,
-        humedad: fluctuacionHum,
-        uv: climaBase.uv
-      });
+      const zonasProcesadas = obtenerZonasProcesadas(nuevoClima);
 
       const sumaSensaciones = zonasProcesadas.reduce((acc, z) => acc + z.sensacionTermica, 0);
       const promedioGeneral = parseFloat((sumaSensaciones / zonasProcesadas.length).toFixed(1));
@@ -70,8 +88,8 @@ export default function DashboardPage() {
         database: 'Local Memory'
       });
 
-      if (selectedZone) {
-        const fresca = zonasProcesadas.find(z => z.id === selectedZone.id);
+      if (selectedZoneRef.current) {
+        const fresca = zonasProcesadas.find(z => z.id === selectedZoneRef.current.id);
         if (fresca) setSelectedZone(fresca);
       }
     }
@@ -100,7 +118,7 @@ export default function DashboardPage() {
       clearInterval(dataInterval);
       clearInterval(histInterval);
     };
-  }, [climaBase, selectedZone]);
+  }, []);;
 
   if (!telemetria) {
     return (
@@ -175,13 +193,7 @@ export default function DashboardPage() {
         <ZoneMap 
           zonas={telemetria.sensores}
           selectedZone={selectedZone}
-          onZoneSelect={(zona) => {
-            if (!zona || selectedZone?.id === zona.id) {
-              setSelectedZone(null);
-            } else {
-              setSelectedZone(zona);
-            }
-          }}
+          onZoneSelect={handleZoneSelect}
           showPolygons={showPolygons}
         />
       </main>

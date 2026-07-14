@@ -1,27 +1,30 @@
 ﻿import React from 'react';
 import { Building2, Home, Trees } from 'lucide-react';
 import Reveal from './Reveal';
+import plazaImage from '../../assets/plaza.jfif';
+import jonteImage from '../../assets/alvarezjonte.jfif';
+import callesImage from '../../assets/calles.jfif';
 
 const lugares = [
   {
     titulo: 'Plaza Don Pedro de Mendoza',
     icon: Trees,
     descripcion: 'Pulmón verde central del barrio. Actúa como oasis térmico con arbolado excelente que mitiga temperaturas extremas locales.',
-    image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1000&q=80',
+    image: plazaImage,
     alt: 'Arboleda urbana con sendero y sombra, referencia visual para la plaza del barrio'
   },
   {
     titulo: 'Centro Comercial Av. Álvarez Jonte',
     icon: Building2,
     descripcion: 'Corredor de mayor densidad comercial y tránsito. El pavimento oscuro absorbe calor y favorece una isla de calor urbana activa.',
-    image: 'https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1000&q=80',
+    image: jonteImage,
     alt: 'Avenida urbana con edificios y tránsito, referencia visual para un corredor comercial'
   },
   {
     titulo: 'Calles Residenciales Arboladas',
     icon: Home,
     descripcion: 'Calles barriales con sombra natural, menor exposición solar directa y mejores condiciones de confort para caminar.',
-    image: 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1000&q=80',
+    image: callesImage,
     alt: 'Calle residencial con árboles y viviendas, referencia visual para Monte Castro'
   }
 ];

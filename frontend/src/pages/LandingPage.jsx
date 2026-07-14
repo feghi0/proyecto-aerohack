@@ -13,9 +13,9 @@ export default function LandingPage() {
   return (
     <div className="landing-container">
       <Helmet>
-        <title>Monte Castro Smart Climate | Aerohack ET 35</title>
+        <title>Climate Monte Castro | Aerohack ET 35</title>
         <meta name="description" content="Proyecto Aerohack de monitoreo térmico urbano, albedo y confort peatonal para Monte Castro, CABA." />
-        <meta property="og:title" content="Monte Castro Smart Climate" />
+        <meta property="og:title" content="Climate Monte Castro" />
         <meta property="og:description" content="Dashboard y landing del proyecto escolar Aerohack sobre islas de calor urbanas en Monte Castro." />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="/src/assets/hero.png" />

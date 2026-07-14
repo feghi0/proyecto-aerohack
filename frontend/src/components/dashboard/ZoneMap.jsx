@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { perimetroMonteCastro } from '../../data/barrioPerimetro';
 
 export default function ZoneMap({ zonas = [], selectedZone = null, onZoneSelect, showPolygons = true }) {
@@ -50,6 +50,28 @@ export default function ZoneMap({ zonas = [], selectedZone = null, onZoneSelect,
     };
   }, [onZoneSelect]);
 
+  const polygonRefsMap = useRef(new Map());
+  const selectedZoneIdRef = useRef(null);
+
+  // Mantener la ref del ID de la zona seleccionada al día
+  useEffect(() => {
+    selectedZoneIdRef.current = selectedZone?.id;
+  }, [selectedZone]);
+
+  const getNormalStyle = (zona, isSelected) => {
+    let color = '#2ec4b6';
+    if (zona.sensacionTermica >= 33) color = '#ff4d6d';
+    else if (zona.sensacionTermica >= 28) color = '#ff9f1c';
+
+    return {
+      fillColor: color,
+      color: isSelected ? '#ffffff' : color,
+      weight: isSelected ? 4 : 1.5,
+      opacity: isSelected ? 0.95 : 0.55,
+      fillOpacity: isSelected ? 0.58 : 0.34
+    };
+  };
+
   useEffect(() => {
     const L = window.L;
     const map = mapInstanceRef.current;
@@ -58,6 +80,7 @@ export default function ZoneMap({ zonas = [], selectedZone = null, onZoneSelect,
     if (!L || !map || !layers) return;
 
     layers.clearLayers();
+    polygonRefsMap.current.clear();
 
     L.polygon(perimetroMonteCastro, {
       color: '#ff9f1c',
@@ -71,30 +94,24 @@ export default function ZoneMap({ zonas = [], selectedZone = null, onZoneSelect,
     if (!showPolygons) return;
 
     zonas.forEach((zona) => {
-      const isSelected = selectedZone?.id === zona.id;
-      let color = '#2ec4b6';
-      if (zona.sensacionTermica >= 33) color = '#ff4d6d';
-      else if (zona.sensacionTermica >= 28) color = '#ff9f1c';
-
-      const baseStyle = {
-        fillColor: color,
-        color: isSelected ? '#ffffff' : color,
-        weight: isSelected ? 4 : 1.5,
-        opacity: isSelected ? 0.95 : 0.55,
-        fillOpacity: isSelected ? 0.58 : 0.34,
-        className: isSelected ? 'leaflet-selected-polygon' : ''
-      };
+      const isSelected = selectedZoneIdRef.current === zona.id;
+      const baseStyle = getNormalStyle(zona, isSelected);
 
       const pol = L.polygon(zona.polygon, baseStyle).addTo(layers);
+      polygonRefsMap.current.set(zona.id, pol);
 
       pol.on('mouseover', () => {
-        if (!isSelected) {
+        const currentlySelected = selectedZoneIdRef.current === zona.id;
+        if (!currentlySelected) {
           pol.setStyle({ fillOpacity: 0.48, opacity: 0.85, weight: 2.5 });
         }
       });
 
       pol.on('mouseout', () => {
-        if (!isSelected) pol.setStyle(baseStyle);
+        const currentlySelected = selectedZoneIdRef.current === zona.id;
+        if (!currentlySelected) {
+          pol.setStyle(getNormalStyle(zona, false));
+        }
       });
 
       pol.on('click', (event) => {
@@ -102,7 +119,20 @@ export default function ZoneMap({ zonas = [], selectedZone = null, onZoneSelect,
         onZoneSelect?.(zona);
       });
     });
-  }, [zonas, selectedZone, showPolygons, onZoneSelect]);
+  }, [zonas, showPolygons, onZoneSelect]);
+
+  // Actualización dinámica de estilos
+  useEffect(() => {
+    const L = window.L;
+    if (!L) return;
+
+    polygonRefsMap.current.forEach((pol, id) => {
+      const zona = zonas.find(z => z.id === id);
+      if (!zona) return;
+      const isSelected = selectedZone?.id === id;
+      pol.setStyle(getNormalStyle(zona, isSelected));
+    });
+  }, [selectedZone, zonas]);
 
   return (
     <div className="map-wrapper">
