@@ -1,6 +1,6 @@
-﻿import React from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import { integrantes, informacionMateria } from '../../data/integrantes';
 import Reveal from './Reveal';
@@ -10,10 +10,6 @@ const titleLines = ['Monitoreo Climático', 'y Albedo Urbano', 'en Monte Castro'
 export default function HeroSection() {
   return (
     <Reveal as="section" className="hero-section hero-mesh" delay={0.08}>
-      <div className="hero-badge">
-        <Sparkles size={16} strokeWidth={2.2} />
-        Evaluadores & Profesores
-      </div>
 
       <h1 className="hero-title" aria-label="Monitoreo Climático y Albedo Urbano en Monte Castro">
         {titleLines.map((line, idx) => (
@@ -60,7 +56,6 @@ export default function HeroSection() {
               <div className="avatar-placeholder">{miembro.avatar}</div>
               <div className="team-info">
                 <span className="team-name">{miembro.nombre}</span>
-                <span className="team-role">{miembro.rol}</span>
               </div>
             </motion.div>
           ))}

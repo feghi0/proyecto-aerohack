@@ -1,4 +1,4 @@
-﻿require('dotenv').config();
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 
@@ -494,7 +494,7 @@ app.get('/api/historico', (req, res) => {
 
 // Levantar el servidor
 app.listen(PORT, () => {
-  console.log(`Servidor "Monte Castro Smart Climate v2" corriendo en http://localhost:${PORT}`);
+  console.log(`Servidor "Climate Monte Castro v2" corriendo en http://localhost:${PORT}`);
 });
 
 

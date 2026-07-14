@@ -131,15 +131,15 @@ export default function DashboardPage() {
   return (
     <>
       <Helmet>
-        <title>Dashboard Climático | Monte Castro Smart Climate</title>
+        <title>Dashboard Climático | Climate Monte Castro</title>
         <meta name="description" content="Panel de monitoreo térmico por zonas para Monte Castro con histórico, alertas y recomendaciones de albedo." />
       </Helmet>
       <div className="app-container">
       {/* Panel Lateral Izquierdo */}
       <aside className="sidebar">
         <div className="sidebar-header">
-          <h1>Monte Castro</h1>
-          <h2>Smart Climate v2</h2>
+          <h1>Climate Monte Castro</h1>
+          <h2>Monitoreo Térmico v2</h2>
           <p className="subtitle">Monitoreo térmico avanzado y analíticas de confort urbano</p>
         </div>
 
