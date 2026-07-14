@@ -42,9 +42,9 @@ export default function DashboardPage() {
   const [selectedZone, setSelectedZone] = useState(null);
   const [showPolygons, setShowPolygons] = useState(true);
   const [climaBase, setClimaBase] = useState({
-    temperatura: 31.5,
-    humedad: 65,
-    uv: 6.8
+    temperatura: 28.2,
+    humedad: 75,
+    uv: 5.5
   });
 
   const selectedZoneRef = useRef(selectedZone);
@@ -80,10 +80,10 @@ export default function DashboardPage() {
         if (fresca) setSelectedZone(fresca);
       }
     } catch {
-      // Fallback local: simular datos en cliente
+      // Fallback local: simular datos en cliente (primavera templada)
       const base = climaBaseRef.current;
-      const fluctuacionTemp = base.temperatura + (Math.random() - 0.5) * 0.3;
-      const fluctuacionHum = Math.max(20, Math.min(100, base.humedad + Math.round((Math.random() - 0.5) * 2)));
+      const fluctuacionTemp = Math.max(27.8, Math.min(28.6, base.temperatura + (Math.random() - 0.5) * 0.2));
+      const fluctuacionHum = Math.max(70, Math.min(80, base.humedad + Math.round((Math.random() - 0.5) * 2)));
       
       const nuevoClima = {
         temperatura: parseFloat(fluctuacionTemp.toFixed(2)),

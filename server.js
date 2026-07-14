@@ -283,11 +283,11 @@ const zonasMontecastro = [
   }
 ];
 
-// Clima Base Simulado
+// Clima Base Simulado (Primaveral templado)
 let climaBaseSimulado = {
-  temperatura: 31.5,
-  humedad: 65,
-  uv: 6.8,
+  temperatura: 28.2,
+  humedad: 75,
+  uv: 5.5,
   fuente: 'Simulador (Local)'
 };
 
@@ -441,11 +441,11 @@ async function recalcularZonas() {
   }
 }
 
-// Fluctuación rápida simulada en memoria (dinamismo local)
+// Fluctuación rápida simulada en memoria (dinamismo primaveral controlado)
 setInterval(async () => {
   if (climaBaseSimulado.fuente.includes('Simulador')) {
-    climaBaseSimulado.temperatura = Number((climaBaseSimulado.temperatura + (Math.random() - 0.5) * 0.3).toFixed(2));
-    climaBaseSimulado.humedad = Math.max(20, Math.min(100, climaBaseSimulado.humedad + Math.round((Math.random() - 0.5) * 2)));
+    climaBaseSimulado.temperatura = Number(Math.max(27.8, Math.min(28.6, climaBaseSimulado.temperatura + (Math.random() - 0.5) * 0.2)).toFixed(2));
+    climaBaseSimulado.humedad = Math.max(70, Math.min(80, climaBaseSimulado.humedad + Math.round((Math.random() - 0.5) * 2)));
   }
   await recalcularZonas();
 }, 15000);
