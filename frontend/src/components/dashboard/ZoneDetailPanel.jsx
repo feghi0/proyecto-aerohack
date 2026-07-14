@@ -1,5 +1,6 @@
-﻿import React from 'react';
+import React from 'react';
 import { Car, Mountain, Shirt, Sprout, X } from 'lucide-react';
+import { motion } from 'motion/react';
 import Badge from '../ui/Badge';
 import Chip from '../ui/Chip';
 
@@ -20,7 +21,14 @@ export default function ZoneDetailPanel({ zona, onClose }) {
   }
 
   return (
-    <aside className="zone-detail-panel active" aria-live="polite">
+    <motion.aside
+      className="zone-detail-panel active"
+      aria-live="polite"
+      initial={{ opacity: 0, x: 30, scale: 0.98 }}
+      animate={{ opacity: 1, x: 0, scale: 1 }}
+      exit={{ opacity: 0, x: 20, scale: 0.98 }}
+      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+    >
       <button className="close-panel-btn" onClick={onClose} aria-label="Cerrar detalles">
         <X size={16} strokeWidth={2.2} />
       </button>
@@ -87,6 +95,6 @@ export default function ZoneDetailPanel({ zona, onClose }) {
           <p className="outfit-explanation">{zona.outfit.explicacionFisica}</p>
         </div>
       )}
-    </aside>
+    </motion.aside>
   );
 }

@@ -1,17 +1,41 @@
 :root {
+  /* --- Base --- */
   --azul-profundo: #050a12;
   --azul-medio: #0e1726;
   --azul-resplando: #1b2d4a;
   --gris-tech: #425c80;
   --gris-claro: #8da4c4;
-  --blanco-hueso: #f5f7fa;
+
+  /* --- Neutrales --- */
+  --gris-900: #2a3a52;       /* Bordes activos, divisores */
+  --gris-600: #5d7899;       /* Texto secundario */
+  --gris-400: #8da4c4;       /* Labels */
+  --gris-200: #b8cce0;       /* Texto de lectura en cards */
+  --blanco-hueso: #f0f4f8;   /* Más frío, +contraste */
+
+  /* --- Semáforo térmico (saturación mejorada) --- */
   --rojo-alerta: #ff4d6d;
-  --naranja-alerta: #ff9f1c;
-  --verde-ok: #2ec4b6;
-  --borde-sutil: rgba(255, 255, 255, 0.06);
-  --glass-bg: rgba(14, 23, 38, 0.75);
+  --naranja-alerta: #ffb347;  /* +brillo para legibilidad */
+  --verde-ok: #34d1bf;        /* +luminosidad en dark bg */
+  
+  /* --- Acento secundario --- */
+  --cyan-glow: #00d4ff;
+
+  /* --- Glass --- */
+  --borde-sutil: rgba(255, 255, 255, 0.08);  /* +2% opacidad para mejor contraste */
+  --glass-bg: rgba(14, 23, 38, 0.78);
   --glass-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.45);
   --transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  /* --- Tokens de espaciado --- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
 }
 
 * {
@@ -144,7 +168,20 @@ html, body {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
+}
+
+.sidebar-badge {
+  background: rgba(46, 196, 182, 0.1);
+  border: 1px solid rgba(46, 196, 182, 0.3);
+  color: var(--verde-ok);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
+  align-self: flex-start;
+  letter-spacing: 0.8px;
 }
 
 .sidebar-header h1 {
@@ -172,6 +209,29 @@ html, body {
   border-bottom: 1px solid var(--borde-sutil);
   padding-bottom: 16px;
   line-height: 1.4;
+}
+
+/* --- Nuevas Secciones del Sidebar --- */
+.sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--borde-sutil);
+}
+
+.sidebar-section:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.sidebar-section-title {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--gris-600);
+  font-weight: 800;
+  margin-top: var(--space-2);
 }
 
 /* Glassmorphism Cards */
@@ -218,7 +278,8 @@ html, body {
 }
 
 .card-value {
-  font-size: 2.4rem;
+  font-family: 'JetBrains Mono', 'Outfit', monospace;
+  font-size: 1.9rem;
   font-weight: 800;
   letter-spacing: -0.5px;
   background: linear-gradient(180deg, #ffffff 0%, #dbe3ed 100%);
@@ -266,6 +327,12 @@ html, body {
 .card.alerta.nivel-rojo {
   border-left: 6px solid var(--rojo-alerta);
   background: linear-gradient(90deg, rgba(255, 77, 109, 0.08) 0%, var(--glass-bg) 100%);
+  animation: alertPulse 3s ease-in-out infinite;
+}
+
+@keyframes alertPulse {
+  0%, 100% { box-shadow: var(--glass-shadow); }
+  50% { box-shadow: 0 0 16px 2px rgba(255, 77, 109, 0.25), var(--glass-shadow); }
 }
 
 .card.alerta.nivel-naranja {
@@ -529,12 +596,14 @@ html, body {
 }
 
 .stat-val {
+  font-family: 'JetBrains Mono', 'Outfit', monospace;
   font-size: 1.55rem;
   font-weight: 800;
   color: var(--blanco-hueso);
 }
 
 .stat-val-sub {
+  font-family: 'JetBrains Mono', 'Outfit', monospace;
   font-size: 1.05rem;
   font-weight: 700;
   margin-top: 4px;
@@ -602,12 +671,7 @@ html, body {
   margin-top: 2px;
 }
 
-/* ---------- LEAFLET POLÍGONOS CUSTOMIZATIONS ---------- */
 
-.leaflet-selected-polygon {
-  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.4));
-  transition: all 0.3s ease;
-}
 
 /* Toggle Switch */
 .toggle-container {
@@ -689,6 +753,7 @@ input:checked + .slider:before {
 }
 
 .manzana-stat-val {
+  font-family: 'JetBrains Mono', 'Outfit', monospace;
   font-size: 1.25rem;
   font-weight: 700;
 }
@@ -1282,18 +1347,19 @@ input:checked + .slider:before {
 .hero-mesh::before {
   content: '';
   position: absolute;
-  width: min(760px, 95vw);
-  height: 360px;
-  top: -40px;
+  width: min(840px, 95vw);
+  height: 400px;
+  top: -60px;
   left: 50%;
   transform: translateX(-50%);
   background:
-    radial-gradient(circle at 28% 28%, rgba(46, 196, 182, 0.24), transparent 36%),
-    radial-gradient(circle at 72% 40%, rgba(255, 159, 28, 0.18), transparent 34%);
-  filter: blur(14px);
-  opacity: 0.85;
+    radial-gradient(circle at 20% 30%, rgba(52, 209, 191, 0.16), transparent 50%),
+    radial-gradient(circle at 80% 40%, rgba(255, 179, 71, 0.12), transparent 50%),
+    radial-gradient(circle at 50% 60%, rgba(0, 212, 255, 0.08), transparent 45%);
+  filter: blur(80px);
+  opacity: 0.9;
   z-index: -1;
-  animation: meshDrift 9s ease-in-out infinite alternate;
+  animation: meshDrift 10s ease-in-out infinite alternate;
 }
 
 @keyframes meshDrift {
@@ -1588,4 +1654,70 @@ input:checked + .slider:before {
 .sidebar .zone-detail-panel .close-panel-btn {
   top: 14px;
   right: 14px;
+}
+
+/* ---------- SKELETON / SHIMMER LOADING ---------- */
+.skeleton-container {
+  pointer-events: none;
+}
+
+.skeleton-sidebar {
+  gap: var(--space-5) !important;
+}
+
+.skeleton-header {
+  height: 80px;
+  width: 70%;
+  border-radius: 12px;
+  background: var(--azul-resplando);
+}
+
+.skeleton-card {
+  width: 100%;
+  border-radius: 16px;
+  background: var(--glass-bg);
+  border: 1px solid var(--borde-sutil);
+}
+
+.skeleton-map-wrapper {
+  padding: var(--space-6);
+  height: 100%;
+  width: 100%;
+}
+
+.skeleton-map {
+  height: 100%;
+  width: 100%;
+  border-radius: 16px;
+  background: var(--azul-medio);
+  border: 1px solid var(--borde-sutil);
+}
+
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 20%,
+    rgba(255, 255, 255, 0.08) 60%,
+    transparent 100%
+  );
+  animation: shimmerAnim 2.5s infinite;
+}
+
+@keyframes shimmerAnim {
+  100% {
+    transform: translateX(100%);
+  }
 }

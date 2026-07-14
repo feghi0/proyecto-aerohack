@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { School } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import HeroSection from '../components/landing/HeroSection';
@@ -8,10 +8,12 @@ import MethodologySection from '../components/landing/MethodologySection';
 import TechStack from '../components/landing/TechStack';
 import Reveal from '../components/landing/Reveal';
 import { informacionMateria } from '../data/integrantes';
+import Footer from '../components/layout/Footer';
+
 
 export default function LandingPage() {
   return (
-    <div className="landing-container">
+    <>
       <Helmet>
         <title>Climate Monte Castro | Aerohack ET 35</title>
         <meta name="description" content="Proyecto Aerohack de monitoreo térmico urbano, albedo y confort peatonal para Monte Castro, CABA." />
@@ -20,38 +22,40 @@ export default function LandingPage() {
         <meta property="og:type" content="website" />
         <meta property="og:image" content="/src/assets/hero.png" />
       </Helmet>
+      <div className="landing-container">
+        <Reveal as="section" className="school-banner">
+          <div className="school-info">
+            <span className="school-badge">Proyecto Escolar</span>
+            <h2 className="school-name">{informacionMateria.colegio}</h2>
+            <h3 className="school-subname">Especialidad en Computación</h3>
 
-      <Reveal as="section" className="school-banner">
-        <div className="school-info">
-          <span className="school-badge">Proyecto Escolar</span>
-          <h2 className="school-name">{informacionMateria.colegio}</h2>
-          <h3 className="school-subname">Especialidad en Computación</h3>
-
-          <div className="school-details">
-            <div className="school-detail-item">
-              <span className="school-detail-lbl">Materia</span>
-              <span className="school-detail-val">{informacionMateria.materia}</span>
-            </div>
-            <div className="school-detail-item">
-              <span className="school-detail-lbl">Curso</span>
-              <span className="school-detail-val">{informacionMateria.curso}</span>
-            </div>
-            <div className="school-detail-item">
-              <span className="school-detail-lbl">Ubicación</span>
-              <span className="school-detail-val">{informacionMateria.ubicacion}</span>
+            <div className="school-details">
+              <div className="school-detail-item">
+                <span className="school-detail-lbl">Materia</span>
+                <span className="school-detail-val">{informacionMateria.materia}</span>
+              </div>
+              <div className="school-detail-item">
+                <span className="school-detail-lbl">Curso</span>
+                <span className="school-detail-val">{informacionMateria.curso}</span>
+              </div>
+              <div className="school-detail-item">
+                <span className="school-detail-lbl">Ubicación</span>
+                <span className="school-detail-val">{informacionMateria.ubicacion}</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="school-logo-placeholder" aria-hidden="true">
-          <School size={40} strokeWidth={1.8} />
-        </div>
-      </Reveal>
+          <div className="school-logo-placeholder" aria-hidden="true">
+            <School size={40} strokeWidth={1.8} />
+          </div>
+        </Reveal>
 
-      <HeroSection />
-      <AboutSection />
-      <BarrioGallery />
-      <MethodologySection />
-      <TechStack />
-    </div>
+        <HeroSection />
+        <AboutSection />
+        <BarrioGallery />
+        <MethodologySection />
+        <TechStack />
+      </div>
+      <Footer />
+    </>
   );
 }
