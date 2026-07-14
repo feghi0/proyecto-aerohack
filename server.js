@@ -371,7 +371,19 @@ async function actualizarClimaDeInternet() {
     if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
     
     const data = await response.json();
-    climaBaseSimulado.temperatura = data.main.temp;
+    let tempReal = data.main.temp;
+    
+    // Si hace frío (invierno/otoño), aplicamos un offset de simulación primaveral
+    // para que la demostración del mapa y las alertas térmicas siga siendo visual.
+    if (tempReal < 24) {
+      const offsetPrimavera = 28.2 - tempReal;
+      tempReal = 28.2 + (Math.random() - 0.5) * 0.4;
+      climaBaseSimulado.fuente = `OpenWeatherMap (Demo Offset: +${offsetPrimavera.toFixed(1)}°C)`;
+    } else {
+      climaBaseSimulado.fuente = 'OpenWeatherMap API';
+    }
+    
+    climaBaseSimulado.temperatura = Number(tempReal.toFixed(2));
     climaBaseSimulado.humedad = data.main.humidity;
     
     const hora = new Date().getHours();
@@ -380,8 +392,7 @@ async function actualizarClimaDeInternet() {
       uvBase = Math.sin((hora - 8) / 10 * Math.PI) * 10;
     }
     climaBaseSimulado.uv = Number((uvBase + (Math.random() - 0.5) * 1.0).toFixed(1));
-    climaBaseSimulado.fuente = 'OpenWeatherMap API';
-    console.log(`Clima base actualizado: ${climaBaseSimulado.temperatura}°C, ${climaBaseSimulado.humedad}% HR.`);
+    console.log(`Clima base actualizado: ${climaBaseSimulado.temperatura}°C, ${climaBaseSimulado.humedad}% HR. Fuente: ${climaBaseSimulado.fuente}`);
   } catch (err) {
     console.error('Error al consultar OWM. Usando simulación local:', err.message);
     climaBaseSimulado.fuente = 'Simulador (Fallback)';
@@ -443,7 +454,7 @@ async function recalcularZonas() {
 
 // Fluctuación rápida simulada en memoria (dinamismo primaveral controlado)
 setInterval(async () => {
-  if (climaBaseSimulado.fuente.includes('Simulador')) {
+  if (climaBaseSimulado.fuente.includes('Simulador') || climaBaseSimulado.fuente.includes('Demo')) {
     climaBaseSimulado.temperatura = Number(Math.max(27.8, Math.min(28.6, climaBaseSimulado.temperatura + (Math.random() - 0.5) * 0.2)).toFixed(2));
     climaBaseSimulado.humedad = Math.max(70, Math.min(80, climaBaseSimulado.humedad + Math.round((Math.random() - 0.5) * 2)));
   }
